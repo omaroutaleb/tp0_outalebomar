@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>TP0 – Chat JSF/CDI</title>
+    <h:outputStylesheet library="css" name="style.css"/>
+    <h:outputScript library="js" name="app.js"/>
+</h:head>
+
+<h:body>
+    <h:form id="form">
+        <h:panelGrid columns="1" style="width: 100%; gap:1rem">
+            <h3>TP 0 – Mini Chat</h3>
+
+            <!-- Choix du rôle (sélection unique par vue) -->
+            <p:outputLabel value="Rôle de l'API" for="role"/>
+            <p:selectOneMenu id="role" value="#{chatBean.roleApi}" disabled="#{chatBean.roleFige}">
+                <f:selectItem itemLabel="-- choisir --" itemValue=""/>
+                <f:selectItem itemLabel="helpful assistant" itemValue="assistant"/>
+                <f:selectItem itemLabel="traducteur fr-en" itemValue="traducteur"/>
+                <f:selectItem itemLabel="guide touristique" itemValue="guide"/>
+                <p:ajax listener="#{chatBean.figerRole}" update="@form" />
+            </p:selectOneMenu>
+
+            <!-- Zone question -->
+            <p:outputLabel value="Question" for="q"/>
+            <h:inputTextarea id="q" value="#{chatBean.question}" cols="80" rows="4"/>
+
+            <!-- Boutons -->
+            <h:panelGroup>
+                <p:commandButton value="Envoyer" action="#{chatBean.envoyer}" update="@form"/>
+                <p:commandButton value="Effacer dernier" action="#{chatBean.effacerDernier}" update="@form" style="margin-left:0.5rem"/>
+                <p:commandButton value="Nouveau chat" action="#{chatBean.nouveauChat}" />
+            </h:panelGroup>
+
+            <!-- Réponse -->
+            <p:outputLabel value="Réponse" for="r"/>
+            <h:inputTextarea id="r" value="#{chatBean.reponse}" readonly="true" cols="80" rows="4"/>
+
+            <!-- Historique -->
+            <p:outputLabel value="Historique" for="h"/>
+            <h:inputTextarea id="h" value="#{chatBean.historiqueTexte}" readonly="true" cols="80" rows="8"/>
+        </h:panelGrid>
+
+        <p:messages id="msgs" showDetail="true" closable="true"/>
+    </h:form>
+</h:body>
+</html>
